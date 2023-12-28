@@ -5,16 +5,40 @@ FROM kalilinux/kali-rolling
 RUN apt-get update && apt-get upgrade -y
 
 # Installation des packages Apache, PHP, SSH, Git et NPM
-RUN apt-get install -y apache2 mariadb-server
-RUN apt-get install -y php8.2 libapache2-mod-php8.2 php8.2-mbstring php8.2-xml php8.2-zip php8.2-mysql
-RUN apt-get install -y openssh-server git
-RUN apt-get install -y npm
-
-# Installation des outils nécessaires
-RUN apt-get install -y nmap dnsrecon nbtscan samba-common-bin impacket-scripts enum4linux masscan
-RUN apt-get install -y curl hakrawler assetfinder amass httprobe subjack wafw00f nikto wapiti
-RUN apt-get install -y python3-pip golang-go
-RUN apt-get install -y openvpn
+RUN apt-get install -y apache2 \
+    mariadb-server \
+    php8.2 \
+    libapache2-mod-php8.2 \
+    php8.2-mbstring \
+    php8.2-xml \
+    php8.2-zip \
+    php8.2-mysql \
+    openssh-server \
+    git \
+    npm \
+    #
+    # Installation des outils nécessaires
+    #
+    nmap \
+    dnsrecon \
+    nbtscan \
+    samba-common-bin \
+    impacket-scripts \
+    enum4linux \
+    masscan \
+    curl \
+    hakrawler \
+    assetfinder \
+    amass \
+    httprobe \
+    subjack \
+    wafw00f \
+    nikto \
+    wapiti \
+    python3-pip \
+    golang-go \
+    openvpn \
+    && apt clean && rm -rf /var/lib/apt/lists/*
 RUN pip3 install droopescan
 
 # Installation de composer
@@ -33,8 +57,7 @@ RUN a2enmod http2
 # Installation script démarrage mariadb et apache2
 COPY init-services.sh /usr/local/bin/
 COPY start-services.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/init-services.sh
-RUN chmod +x /usr/local/bin/start-services.sh
+RUN chmod +x /usr/local/bin/{init-services.sh,start-services.sh}
 
 # Exposition ports Apache et SSH
 EXPOSE 80
